@@ -1,3 +1,10 @@
+-- |
+-- Module    : Crypto.Saltine.QuickCheck
+-- Copyright : Jeremy Groven
+-- License   : BSD3
+--
+-- This module provides newtype/data wrappers that provide Arbitrary instances
+-- for Crypto.Saltine types.
 module Crypto.Saltine.QuickCheck
 ( DeterministicBoxPair(..)
 , DeterministicBoxNonce(..)
@@ -25,28 +32,38 @@ import Foreign.Ptr
 import System.IO.Unsafe          ( unsafePerformIO )
 import Test.QuickCheck           ( Arbitrary(..) )
 
-boxSeedBytes :: Int
-boxSeedBytes = fromIntegral c_crypto_box_seedbytes
-
-signSeedBytes :: Int
-signSeedBytes = fromIntegral c_crypto_sign_seedbytes
-
+-- |Wrapper around Saltine's Box.Keypair
 data DeterministicBoxPair = DBP
   { boxSecret :: !Box.SecretKey
   , boxPublic :: !Box.PublicKey }
 
+-- |Wrapper around Saltine's Box.Nonce
 newtype DeterministicBoxNonce = DBN { fromDBN :: Box.Nonce }
 
+-- |Wrapper around Saltine's Sign.Keypair
 data DeterministicSignPair = DSP
   { signSecret :: !Sign.SecretKey
   , signPublic :: !Sign.PublicKey }
 
+-- |Wrapper around Saltine's SecretBox.Key
 newtype DeterministicSecretKey   = DSK { fromDSK :: Secret.Key }
+
+-- |Wrapper around Saltine's SecretBox.Nonce
 newtype DeterministicSecretNonce = DSN { fromDSN :: Secret.Nonce }
 
+-- |Convenience function for getting a Box.Keypair; can be used in a test as
+--
+-- @
+--     (boxSecret, boxPublic) <- toBoxPair \`fmap\` arbitrary
+-- @
 toBoxPair :: DeterministicBoxPair -> Box.Keypair
 toBoxPair (DBP s p) = (s,p)
 
+-- |Convenience function for getting a Sign.Keypair; can be used in a test as
+--
+-- @
+--     (signSecret, signPublic) <- toSignPair \`fmap\` arbitrary
+-- @
 toSignPair :: DeterministicSignPair -> Sign.Keypair
 toSignPair (DSP s p) = (s,p)
 
@@ -131,4 +148,10 @@ foreign import ccall "crypto_sign_seed_keypair"
 
 foreign import ccall "crypto_sign_seedbytes"
   c_crypto_sign_seedbytes :: CSize
+
+boxSeedBytes :: Int
+boxSeedBytes = fromIntegral c_crypto_box_seedbytes
+
+signSeedBytes :: Int
+signSeedBytes = fromIntegral c_crypto_sign_seedbytes
 
