@@ -15,7 +15,6 @@ import qualified Crypto.Saltine.Internal.ByteSizes as Sizes
 import qualified Data.ByteString                   as ByteString
 
 import Crypto.Saltine.Class      ( IsEncoding(..) )
-import Crypto.Saltine.Core.Box   ( SecretKey, PublicKey )
 import Data.ByteString           ( ByteString )
 import Data.ByteString.Arbitrary ( fastRandBs )
 import Data.ByteString.Unsafe    ( unsafeUseAsCString )

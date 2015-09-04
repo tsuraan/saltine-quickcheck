@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                saltine-quickcheck
-version:             0.1.0.0
+version:             0.1.0.1
 synopsis:            Quickcheck implementations for some NaCl data
 homepage:            https://github.com/tsuraan/saltine-quickcheck
 license:             MIT
@@ -15,7 +15,7 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Crypto.Saltine.QuickCheck
-  build-depends:       base >=4.7 && <4.8
+  build-depends:       base >=4.7 && <4.9
                      , bytestring
                      , bytestring-arbitrary
                      , hex
@@ -29,7 +29,7 @@ library
 test-suite test-all
   type:                exitcode-stdio-1.0
   main-is:             TestAll.hs
-  build-depends:       base >=4.6 && < 4.8
+  build-depends:       base >=4.6 && < 4.9
                      , bytestring-arbitrary
                      , QuickCheck >= 2.1
                      , saltine
